@@ -1,15 +1,15 @@
 import MainLayout from "@/components/layouts/MainLayout";
 import DarkLayout from "@/components/layouts/DarkLayout";
 
-const AboutPage = () => {
+const PricingPage = () => {
   return (
     <>
-      <h1>You are in About</h1>
+      <h1>You are in Pricing</h1>
     </>
   );
 };
 
-AboutPage.getLayout = function getLayout(page: JSX.Element) {
+PricingPage.getLayout = function getLayout(page: JSX.Element) {
   return (
     <MainLayout>
       <DarkLayout>{page}</DarkLayout>
@@ -17,4 +17,4 @@ AboutPage.getLayout = function getLayout(page: JSX.Element) {
   );
 };
 
-export default AboutPage;
+export default PricingPage;

@@ -1,19 +1,34 @@
 import styles from "@/styles/Navbar.module.css";
 import ActiveLink from "./ActiveLink";
 
+const menuItems = [
+  {
+    text: "Home",
+    href: "/",
+  },
+  {
+    text: "About",
+    href: "/about",
+  },
+  {
+    text: "Contact",
+    href: "/contact",
+  },
+  {
+    text: "Pricing",
+    href: "/pricing",
+  },
+];
+
 const Navbar = () => {
   return (
     <nav>
       <ul className={styles.navbar}>
-        <li className={styles.navbar__item}>
-          <ActiveLink href="/" title="Home" />
-        </li>
-        <li className={styles.navbar__item}>
-          <ActiveLink href="/about" title="About" />
-        </li>
-        <li className={styles.navbar__item}>
-          <ActiveLink href="/contact" title="Contact" />
-        </li>
+        {menuItems.map(({ text, href }) => (
+          <li>
+            <ActiveLink href={href} title={text} />
+          </li>
+        ))}
       </ul>
     </nav>
   );

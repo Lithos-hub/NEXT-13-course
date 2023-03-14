@@ -1,15 +1,20 @@
-import { Inter } from "next/font/google";
-import Link from "next/link";
-import MainLayout from "@/components/layours/MainLayout";
+import MainLayout from "@/components/layouts/MainLayout";
+import DarkLayout from "@/components/layouts/DarkLayout";
 
-const inter = Inter({ subsets: ["latin"] });
+const HomePage = () => {
+  return (
+    <>
+      <h1>You are in Home</h1>
+    </>
+  );
+};
 
-export default function Home() {
+HomePage.getLayout = function getLayout(page: JSX.Element) {
   return (
     <MainLayout>
-      <h1>
-        Go to <Link href="/about">about</Link>
-      </h1>
+      <DarkLayout>{page}</DarkLayout>
     </MainLayout>
   );
-}
+};
+
+export default HomePage;
