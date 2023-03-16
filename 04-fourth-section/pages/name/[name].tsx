@@ -1,22 +1,23 @@
-import { useMemo, useState } from "react";
-import { Button } from "@nextui-org/react";
-import { GetStaticProps, NextPage } from "next";
-import { GetStaticPaths } from "next";
+import React, { useState } from "react";
 
+import { GetStaticProps } from "next";
+import Link from "next/link";
 import { Layout } from "@/components/layouts";
+import PokemonCard from "@/components/pokemon/PokemonCard";
 
-import { Pokemon } from "@/interfaces";
-
+// You should use getStaticPaths if you’re statically pre-rendering pages that use dynamic routes
+import { GetStaticPaths, NextPage } from "next";
 import { pokemonAPI } from "@/services";
-
+import { Pokemon, PokemonApiResponse } from "@/interfaces";
 import Image from "next/image";
+import { Button } from "@nextui-org/react";
 import { LocalFavourites } from "@/utils";
 
 interface Props {
   pokemon: Pokemon;
 }
 
-const PokemonDetail: NextPage<Props> = ({ pokemon }) => {
+const PokemonDetailByName: NextPage<Props> = ({ pokemon }) => {
   const [isFavourite, setIsFavourite] = useState<boolean>(
     LocalFavourites.checkExistingPokemon(pokemon.id)
   );
@@ -73,27 +74,31 @@ const PokemonDetail: NextPage<Props> = ({ pokemon }) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async (ctx) => {
-  const paths = [...Array(151)].map((_, index) => ({
+  const { data } = await pokemonAPI.get<PokemonApiResponse>(
+    "/pokemon?limit=151"
+  );
+
+  const paths = data.results.map(({ name }) => ({
     params: {
-      id: String(index + 1),
+      name: name,
     },
   }));
 
   return {
     paths,
-    fallback: false, // => 404 if the path is any other
+    fallback: false,
   };
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const { id } = params as { id: string };
+  const { name } = params as { name: string };
   const {
-    data: { id: pokemonId, name: name, stats, sprites },
-  } = await pokemonAPI.get<Pokemon>(`/pokemon/${id}`);
+    data: { id, name: pokemonName, stats, sprites },
+  } = await pokemonAPI.get<Pokemon>(`/pokemon/${name}`);
 
   const pokemon = {
-    id: pokemonId,
-    name,
+    id,
+    name: pokemonName,
     stats,
     sprites,
   };
@@ -105,4 +110,4 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   };
 };
 
-export default PokemonDetail;
+export default PokemonDetailByName;

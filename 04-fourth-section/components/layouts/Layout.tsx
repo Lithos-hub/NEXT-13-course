@@ -7,6 +7,8 @@ interface Props {
   title?: string;
 }
 
+const origin = typeof window !== "undefined" && window.location.origin;
+
 const Layout: FC<Props> = ({ children, title }) => {
   return (
     <>
@@ -21,6 +23,15 @@ const Layout: FC<Props> = ({ children, title }) => {
           name="keywords"
           content={`pokemon, pokedex, nintendo, app - ${title}`}
         />
+        <meta
+          property="og:title"
+          content={`Info about the Pokémon: ${title}`}
+        />
+        <meta
+          property="og:description"
+          content={`Page about the information of the Pokémon ${title} `}
+        />
+        <meta property="og:image" content={`${origin}/logo.png`} />
       </Head>
 
       <NavbarUI />

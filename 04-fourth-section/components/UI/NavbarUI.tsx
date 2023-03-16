@@ -19,7 +19,7 @@ const NavbarUI = () => {
         </Link>
         <Navbar.Content>
           <Navbar.Item>
-            <Button auto bordered as={Link} href="#">
+            <Button auto bordered as={Link} href="/favourites">
               Favourites
             </Button>
           </Navbar.Item>
