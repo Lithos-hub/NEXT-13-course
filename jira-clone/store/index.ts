@@ -1,10 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { UISlice } from "@/store/slices/ui";
+import { UISlice, TasksSlice } from "./slices";
 
 //Global store
 export const store = configureStore({
   reducer: {
     UIStore: UISlice.reducer,
+    TasksStore: TasksSlice.reducer,
   },
 });
 

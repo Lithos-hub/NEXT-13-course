@@ -8,7 +8,7 @@ const Navbar: FC = () => {
   const dispatch = useDispatch();
 
   return (
-    <AppBar>
+    <AppBar position="sticky">
       <Toolbar>
         <IconButton onClick={() => dispatch(onToggleSidebar())}>
           <MenuOutlinedIcon />

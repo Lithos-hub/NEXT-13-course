@@ -16,11 +16,9 @@ const Layout: FC<Props> = ({ children, title = "Jira Clone" }) => {
       </Head>
       <Navbar />
       <Sidebar />
-      <main>
-        <div className="p-10 shadow-xl bg-[#202020] m-5 rounded-xl">
-          {children}
-        </div>
-      </main>
+      <div className="p-10 shadow-xl bg-[#202020] m-5 rounded-xl">
+        {children}
+      </div>
     </>
   );
 };
