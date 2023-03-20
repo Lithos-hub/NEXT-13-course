@@ -1,4 +1,5 @@
 import { Task } from "@/interfaces";
+import { TasksApi } from "@/services";
 import { createSlice } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
 
@@ -14,31 +15,10 @@ export const TasksSlice = createSlice({
   name: "Tasks",
   initialState,
   reducers: {
-    addTask: (state, { payload }) => {
-      state.tasks = [
-        ...state.tasks,
-        {
-          ...payload,
-          _id: uuidv4(),
-          createdAt: Date.now(),
-        },
-      ];
-    },
-    updateTask: (state, { payload }) => {
-      console.log("Uploading...", payload);
-      state.tasks = state.tasks.map((task) => {
-        if (task._id === payload._id) {
-          return {
-            ...task,
-            status: payload.status,
-            description: payload.description,
-          };
-        } else {
-          return task;
-        }
-      });
+    setTasks: (state, { payload }) => {
+      state.tasks = payload;
     },
   },
 });
 
-export const { addTask, updateTask } = TasksSlice.actions;
+export const { setTasks } = TasksSlice.actions;

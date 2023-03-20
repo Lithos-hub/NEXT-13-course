@@ -4,7 +4,7 @@ import { CssBaseline } from "@mui/material";
 import { darkTheme, lightTheme } from "@/themes";
 
 import { store } from "@/store";
-import { Provider } from "react-redux";
+import { Provider, useDispatch } from "react-redux";
 
 import "@/styles/globals.css";
 

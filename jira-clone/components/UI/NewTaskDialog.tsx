@@ -1,5 +1,6 @@
 import { Status } from "@/interfaces";
-import { addTask } from "@/store/slices";
+import { TasksApi } from "@/services";
+import { setTasks } from "@/store/slices";
 import SaveOutlinedIcon from "@mui/icons-material/SaveOutlined";
 import {
   Button,
@@ -37,15 +38,19 @@ const NewTaskDialog: FC<Props> = ({ open = false, handleClose }) => {
     setDescription(event.target.value as string);
   };
 
-  const onSave = () => {
+  const getTasksFromDB = async () => {
+    const res = await TasksApi.get("/tasks");
+    dispatch(setTasks(res.data));
+  };
+
+  const onSave = async () => {
     if (!description || !status) return;
-    dispatch(
-      addTask({
-        description,
-        status,
-      })
-    );
+    await TasksApi.post("/tasks", {
+      description,
+      status,
+    });
     handleClose();
+    getTasksFromDB();
     setDescription("");
     setStatus("backlog");
   };

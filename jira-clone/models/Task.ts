@@ -1,7 +1,7 @@
 import { Task } from "@/interfaces";
 import mongoose, { Model, Schema } from "mongoose";
 
-interface ITask extends Task {}
+export interface ITask extends Task {}
 
 const taskSchema = new Schema({
   description: { type: String, required: true },
@@ -19,6 +19,7 @@ const taskSchema = new Schema({
       ],
       message: "{VALUE} is not a valid status",
     },
+    default: "backlog",
   },
 });
 

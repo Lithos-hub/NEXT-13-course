@@ -1,4 +1,6 @@
-import { db } from "@/database";
+import { db, seedData } from "@/database";
+
+import { Task } from "@/models";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 type Data = {
@@ -13,7 +15,12 @@ export default async function handler(
     return res.status(401).json({ message: "Access denied" });
   }
 
+  console.log("Response: ", res);
+
   await db.connect();
+
+  await Task.deleteMany();
+  await Task.insertMany(seedData);
 
   await db.disconnect();
 

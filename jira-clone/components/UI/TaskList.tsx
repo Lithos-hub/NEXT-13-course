@@ -1,8 +1,9 @@
 import { DragEvent, FC, useMemo } from "react";
 import TaskCard from "./TaskCard";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import type { Status } from "@/interfaces";
 import { RootState } from "@/store";
+import Link from "next/link";
 
 interface Props {
   taskStatus: Status;
@@ -21,7 +22,9 @@ const TaskList: FC<Props> = ({ taskStatus }) => {
   return (
     <div onDragOver={allowDrop} className="flex flex-col gap-5">
       {filteredByStatus.map((task, i) => (
-        <TaskCard key={i} task={task} />
+        <Link key={i} href={`/tasks/${task._id}`}>
+          <TaskCard key={i} task={task} />
+        </Link>
       ))}
     </div>
   );

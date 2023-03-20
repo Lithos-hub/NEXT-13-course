@@ -3,11 +3,12 @@ import { Layout } from "@/components/layouts";
 import { Add } from "@mui/icons-material";
 import { Button, Typography } from "@mui/material";
 import Head from "next/head";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Status } from "@/interfaces";
 import { useDispatch, useSelector } from "react-redux";
-import { updateTask } from "@/store/slices";
+import { setTasks } from "@/store/slices";
 import { RootState } from "../store/index";
+import { TasksApi } from "@/services";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -15,6 +16,16 @@ export default function Home() {
   const { currentDragId } = useSelector((state: RootState) => state.UIStore);
   const [open, setOpen] = useState(false);
   const [dragSection, setDragSection] = useState<Status | null>(null);
+
+  const getTasksFromDB = async () => {
+    const res = await TasksApi.get("/tasks");
+    dispatch(setTasks(res.data));
+  };
+
+  useEffect(() => {
+    getTasksFromDB();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const toggleDialog = () => {
     setOpen(!open);
@@ -26,13 +37,12 @@ export default function Home() {
 
   const onDragEnd = () => {
     const taskToUpdate = tasks.find((task) => task._id === currentDragId);
-    dispatch(
-      updateTask({
-        ...taskToUpdate,
-        status: dragSection,
-      })
-    );
+    TasksApi.put(`/tasks/${taskToUpdate!._id}`, {
+      ...taskToUpdate,
+      status: dragSection,
+    });
     setDragSection(null);
+    getTasksFromDB();
   };
 
   return (

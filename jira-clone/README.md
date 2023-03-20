@@ -11,7 +11,7 @@ docker-compose up -d
 MongoDB local URL:
 
 ```
-mongodb://localhost:27017/tasksdb
+mongodb://localhost:27017/jiraclone
 ```
 
 ## Setup environment variables
