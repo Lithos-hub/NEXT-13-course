@@ -5,7 +5,6 @@ import "@fontsource/roboto/700.css";
 
 import { ShopLayout } from "@/components/layouts";
 import { initialData } from "@/database/products";
-import { Card, CardActionArea, CardMedia } from "@mui/material";
 import ProductList from "@/components/products/ProductList";
 
 export default function HomePage() {

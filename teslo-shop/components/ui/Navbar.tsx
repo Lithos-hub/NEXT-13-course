@@ -40,7 +40,7 @@ const Navbar = () => {
           </IconButton>
           <Link href="cart" passHref>
             <IconButton>
-              <Badge badgeContent={2} color="secondary">
+              <Badge badgeContent={3} color="secondary">
                 <ShoppingCartOutlined />
               </Badge>
             </IconButton>

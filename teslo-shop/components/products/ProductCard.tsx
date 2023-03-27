@@ -2,6 +2,7 @@ import { FC, useMemo, useState } from "react";
 import { Card, CardActionArea, CardMedia } from "@mui/material";
 import { IProduct } from "../../interfaces/Product";
 import Link from "next/link";
+import ItemCounter from "../ui/ItemCounter";
 
 interface Props {
   product: IProduct;
@@ -19,7 +20,7 @@ const ProductCard: FC<Props> = ({ product }) => {
       onMouseEnter={() => setIsHovered(!isHovered)}
       onMouseLeave={() => setIsHovered(!isHovered)}
     >
-      <Link href={`/product/slug`} passHref prefetch>
+      <Link href={`/product/${product.slug}`} passHref prefetch>
         <Card>
           <CardActionArea>
             <CardMedia
