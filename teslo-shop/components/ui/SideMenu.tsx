@@ -24,23 +24,54 @@ import {
   SearchOutlined,
   VpnKeyOutlined,
 } from "@mui/icons-material";
+import Link from "next/link";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../../store/index";
+import { onToggleSidebar } from "@/store/slices";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import useDebounce from "@/hooks/useDebounce";
 
 const SideMenu = () => {
+  const dispatch = useDispatch();
+  const { openSidebar } = useSelector((state: RootState) => state.UIStore);
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const router = useRouter();
+
+  const close = () => dispatch(onToggleSidebar());
+  const navigateTo = (url: string) => {
+    close();
+    router.push(url);
+  };
+
+  const onSearchTerm = () => {
+    if (!searchTerm.length) return;
+    navigateTo(`search/${searchTerm}`);
+  };
   return (
     <Drawer
-      open={false}
+      open={openSidebar}
       anchor="right"
+      onClose={close}
       sx={{ backdropFilter: "blur(4px)", transition: "all 0.5s ease-out" }}
     >
       <Box sx={{ width: 250, paddingTop: 5 }}>
         <List>
           <ListItem>
             <Input
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyDown={(e) => (e.key === "Enter" ? onSearchTerm() : null)}
+              autoFocus
               type="text"
-              placeholder="Buscar..."
+              placeholder="Search..."
               endAdornment={
                 <InputAdornment position="end">
-                  <IconButton aria-label="toggle password visibility">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={() => navigateTo(`/search/${searchTerm}`)}
+                  >
                     <SearchOutlined />
                   </IconButton>
                 </InputAdornment>
@@ -48,12 +79,14 @@ const SideMenu = () => {
             />
           </ListItem>
 
-          <ListItemButton>
-            <ListItemIcon>
-              <AccountCircleOutlined />
-            </ListItemIcon>
-            <ListItemText primary={"Perfil"} />
-          </ListItemButton>
+          <Link href="/profile">
+            <ListItemButton>
+              <ListItemIcon>
+                <AccountCircleOutlined />
+              </ListItemIcon>
+              <ListItemText primary={"Profile"} />
+            </ListItemButton>
+          </Link>
 
           <ListItemButton>
             <ListItemIcon>
@@ -62,39 +95,45 @@ const SideMenu = () => {
             <ListItemText primary={"Mis Ordenes"} />
           </ListItemButton>
 
-          <ListItemButton sx={{ display: { xs: "", sm: "none" } }}>
-            <ListItemIcon>
-              <MaleOutlined />
-            </ListItemIcon>
-            <ListItemText primary={"Hombres"} />
-          </ListItemButton>
+          <Link href="/category/men">
+            <ListItemButton sx={{ display: { md: "", lg: "none" } }}>
+              <ListItemIcon>
+                <MaleOutlined />
+              </ListItemIcon>
+              <ListItemText primary={"Men"} />
+            </ListItemButton>
+          </Link>
 
-          <ListItemButton sx={{ display: { xs: "", sm: "none" } }}>
-            <ListItemIcon>
-              <FemaleOutlined />
-            </ListItemIcon>
-            <ListItemText primary={"Mujeres"} />
-          </ListItemButton>
+          <Link href="/category/women">
+            <ListItemButton sx={{ display: { md: "", lg: "none" } }}>
+              <ListItemIcon>
+                <FemaleOutlined />
+              </ListItemIcon>
+              <ListItemText primary={"Women"} />
+            </ListItemButton>
+          </Link>
 
-          <ListItemButton sx={{ display: { xs: "", sm: "none" } }}>
-            <ListItemIcon>
-              <EscalatorWarningOutlined />
-            </ListItemIcon>
-            <ListItemText primary={"Niños"} />
-          </ListItemButton>
+          <Link href="/category/kids">
+            <ListItemButton sx={{ display: { md: "", lg: "none" } }}>
+              <ListItemIcon>
+                <EscalatorWarningOutlined />
+              </ListItemIcon>
+              <ListItemText primary={"Kids"} />
+            </ListItemButton>
+          </Link>
 
           <ListItemButton>
             <ListItemIcon>
               <VpnKeyOutlined />
             </ListItemIcon>
-            <ListItemText primary={"Ingresar"} />
+            <ListItemText primary={"Login"} />
           </ListItemButton>
 
           <ListItemButton>
             <ListItemIcon>
               <LoginOutlined />
             </ListItemIcon>
-            <ListItemText primary={"Salir"} />
+            <ListItemText primary={"Logout"} />
           </ListItemButton>
 
           {/* Admin */}
@@ -105,21 +144,21 @@ const SideMenu = () => {
             <ListItemIcon>
               <CategoryOutlined />
             </ListItemIcon>
-            <ListItemText primary={"Productos"} />
+            <ListItemText primary={"Products"} />
           </ListItemButton>
 
           <ListItemButton>
             <ListItemIcon>
               <ConfirmationNumberOutlined />
             </ListItemIcon>
-            <ListItemText primary={"Ordenes"} />
+            <ListItemText primary={"Orders"} />
           </ListItemButton>
 
           <ListItemButton>
             <ListItemIcon>
               <AdminPanelSettings />
             </ListItemIcon>
-            <ListItemText primary={"Usuarios"} />
+            <ListItemText primary={"Users"} />
           </ListItemButton>
         </List>
       </Box>

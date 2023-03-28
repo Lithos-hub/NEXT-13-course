@@ -6,11 +6,11 @@ import { ShopLayout } from "@/components/layouts";
 const CartPage = () => {
   return (
     <ShopLayout title="Teslo Shop | Cart" pageDescription="Shopping cart page">
-      <section className="w-full h-full grid grid-cols-2 gap-5 justify-center items-start">
+      <section className="w-full h-full flex flex-col md:grid md:grid-cols-2 gap-5 justify-center items-start">
         <div className="shadow-xl rounded-xl p-10">
           <CartList />
         </div>
-        <div className="shadow-xl rounded-xl p-10">
+        <div className="shadow-xl rounded-xl p-10 w-full">
           <OrderSummary />
         </div>
       </section>

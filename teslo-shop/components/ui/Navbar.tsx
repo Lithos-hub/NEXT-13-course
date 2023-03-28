@@ -1,14 +1,44 @@
-import { AppBar, Badge, Button, IconButton, Toolbar } from "@mui/material";
-import Link from "next/link";
-import React from "react";
-import SearchOutlined from "@mui/icons-material/SearchOutlined";
 import {
-  Menu,
-  ShoppingCartCheckoutOutlined,
-  ShoppingCartOutlined,
-} from "@mui/icons-material";
+  AppBar,
+  Badge,
+  Button,
+  IconButton,
+  Input,
+  InputAdornment,
+  Toolbar,
+} from "@mui/material";
+import Link from "next/link";
+import React, { useMemo, useState } from "react";
+import SearchOutlined from "@mui/icons-material/SearchOutlined";
+import { useDispatch } from "react-redux";
+
+import { Close, Menu, ShoppingCartOutlined } from "@mui/icons-material";
+import { onToggleSidebar } from "@/store/slices";
+import { useRouter } from "next/router";
+import { useTheme } from "@emotion/react";
 
 const Navbar = () => {
+  const dispatch = useDispatch();
+  const [searchTerm, setSearchTerm] = useState("");
+  const router = useRouter();
+  const [searchInputVisible, setSearchInputVisibile] = useState(false);
+
+  const openSidemenu = () => dispatch(onToggleSidebar());
+
+  const navigateTo = (url: string) => {
+    close();
+    router.push(url);
+  };
+
+  const onSearchTerm = () => {
+    if (!searchTerm.length) return;
+    navigateTo(`search/${searchTerm}`);
+  };
+
+  const onSearchClick = () => {
+    setSearchInputVisibile(!searchInputVisible);
+  };
+
   return (
     <AppBar>
       <Toolbar className="justify-between">
@@ -16,7 +46,7 @@ const Navbar = () => {
           <span className="font-bold">Teslo</span> <span>| Shop</span>
         </Link>
 
-        <ul className="hidden md:flex md:gap-5 ">
+        <ul className="hidden lg:flex lg:gap-5 absolute left-1/2 -translate-x-1/2">
           <li>
             <Link href="/category/men">
               <Button variant="outlined">Men</Button>
@@ -28,24 +58,66 @@ const Navbar = () => {
             </Link>
           </li>
           <li>
-            <Link href="/category/children">
-              <Button variant="outlined">Children</Button>
+            <Link href="/category/kids">
+              <Button variant="outlined">Kids</Button>
             </Link>
           </li>
         </ul>
 
-        <div className="flex gap-5">
-          <IconButton>
+        <div className="flex gap-5 items-center">
+          {/* Desktop */}
+          {searchInputVisible ? (
+            <div className="flex gap-1">
+              <Input
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                onKeyDown={(e) => (e.key === "Enter" ? onSearchTerm() : null)}
+                autoFocus
+                type="text"
+                placeholder="Search..."
+                className="invisible md:visible"
+                endAdornment={
+                  <InputAdornment position="start">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={() => navigateTo(`/search/${searchTerm}`)}
+                    >
+                      <SearchOutlined />
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+              <IconButton
+                className="hidden md:block"
+                onClick={() => onSearchClick()}
+              >
+                <Close />
+              </IconButton>
+            </div>
+          ) : (
+            <IconButton
+              className="hidden md:block"
+              onClick={() => onSearchClick()}
+            >
+              <SearchOutlined />
+            </IconButton>
+          )}
+
+          {/* Mobile */}
+          <IconButton
+            className="block md:hidden"
+            onClick={() => openSidemenu()}
+          >
             <SearchOutlined />
           </IconButton>
-          <Link href="cart" passHref>
+          <Link href="/cart" passHref>
             <IconButton>
               <Badge badgeContent={3} color="secondary">
                 <ShoppingCartOutlined />
               </Badge>
             </IconButton>
           </Link>
-          <IconButton>
+          <IconButton onClick={() => openSidemenu()}>
             <Menu />
           </IconButton>
         </div>

@@ -5,13 +5,13 @@ import { useProducts } from "@/hooks/useProducts";
 import { CircularProgress } from "@mui/material";
 import CustomSnackbar from "@/components/ui/Snackbar";
 
-export default function HomePage() {
-  const { products, isLoading, isError } = useProducts("/products");
+export default function MenPage() {
+  const { products, isLoading, isError } = useProducts("/products?gender=men");
 
   return (
     <ShopLayout
-      title="Teslo Shop - Home"
-      pageDescription="Best Teslo products market"
+      title="Teslo Shop - Men products"
+      pageDescription="Best Teslo products market for men"
     >
       {isError ? (
         <CustomSnackbar
@@ -20,8 +20,8 @@ export default function HomePage() {
         />
       ) : (
         <>
-          <h1 className="text-2xl font-bold">Store</h1>
-          <h2>All products</h2>
+          <h1 className="text-2xl font-bold">Men</h1>
+          <h2>Products for men</h2>
           {isLoading ? (
             <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
               <CircularProgress />
