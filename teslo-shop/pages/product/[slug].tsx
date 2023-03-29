@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Button, Divider } from "@mui/material";
+import { useState } from "react";
+import { Button, Chip, Divider } from "@mui/material";
 import { ProductSlideshow } from "@/components/products";
 import { ItemCounter } from "@/components/ui";
 import { SizeSelector } from "@/components/products";
@@ -7,15 +7,50 @@ import { ShopLayout } from "@/components/layouts";
 import { IProduct, ISizes } from "@/interfaces";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { dbProducts } from "@/database";
+import { ICartProduct } from "@/interfaces";
+import { useDispatch } from "react-redux";
+import { addProductToCart, updateCheckoutPrice } from "@/store/slices";
 
 interface Props {
   product: IProduct;
 }
 
 const ProductPage: NextPage<Props> = ({ product }) => {
-  const [selectedSize, setSelectedSize] = useState("M");
+  const [selectedSize, setSelectedSize] = useState<ISizes>("M");
+  const [quantity, setQuantity] = useState(1);
+  const dispatch = useDispatch();
+  const [tempCartProduct, setTempCartProduct] = useState<ICartProduct>({
+    ...product,
+    images: product.images[0],
+    sizes: selectedSize,
+    quantity,
+  });
+
+  const addProduct = () => {
+    dispatch(addProductToCart(tempCartProduct));
+    dispatch(updateCheckoutPrice());
+  };
+
+  const onSelectedSize = (size: ISizes) => {
+    setSelectedSize(size);
+    setTempCartProduct({
+      ...tempCartProduct,
+      sizes: selectedSize,
+    });
+  };
+
+  const onSelectedQuantity = (quantity: number) => {
+    setQuantity(quantity);
+    setTempCartProduct({
+      ...tempCartProduct,
+      quantity,
+    });
+  };
   return (
-    <ShopLayout title={product.title} pageDescription={product.description}>
+    <ShopLayout
+      title={`Teslo Shop | ${product.title}`}
+      pageDescription={product.description}
+    >
       <div className="flex flex-col md:grid md:grid-cols-2 gap-5">
         <div>
           <ProductSlideshow images={product.images} />
@@ -24,23 +59,34 @@ const ProductPage: NextPage<Props> = ({ product }) => {
           <h1 className="text-2xl font-bold">{product.title}</h1>
           <h1 className="text-base font-medium">${product.price}</h1>
           <Divider />
-          <div className="flex gap-5 items-center">
-            <p>Quantity: </p> <ItemCounter />
-            <Button
-              color="primary"
-              variant="text"
-              fullWidth
-              className="bg-blue-500 text-white hover:text-black rounded-full"
-            >
-              Add to cart
-            </Button>
-          </div>
+
+          {product.inStock === 0 ? (
+            <Chip label="Out of stock" color="error" variant="outlined" />
+          ) : (
+            <div className="flex gap-5 items-center">
+              <p>Quantity: </p>{" "}
+              <ItemCounter
+                max={product.inStock}
+                quantity={quantity}
+                onSelectedQuantity={onSelectedQuantity}
+              />
+              <Button
+                color="primary"
+                variant="text"
+                fullWidth
+                className="bg-blue-500 text-white hover:text-black rounded-full"
+                onClick={addProduct}
+              >
+                Add to cart
+              </Button>
+            </div>
+          )}
+
           <SizeSelector
             selectedSize={selectedSize}
             sizes={["XS", "S", "M", "L", "XL", "XXL", "XXXL"]}
-            onSelection={(selection: ISizes) => setSelectedSize(selection)}
+            onSelection={(selection: ISizes) => onSelectedSize(selection)}
           />
-          {/* <Chip label="No available" color="error" variant="outlined" /> */}
           <strong>Description</strong>
           <small className="text-justify">{product.description}</small>
         </div>

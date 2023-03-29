@@ -1,11 +1,27 @@
+import { RootState } from "@/store";
 import { Button, Divider } from "@mui/material";
 import Link from "next/link";
-import React from "react";
+import React, { useMemo } from "react";
+import { useSelector } from "react-redux";
 
 const OrderSummary = () => {
+  const { cart, subtotal, tax, total } = useSelector(
+    (state: RootState) => state.CartStore
+  );
+  const cartLength = useMemo(() => cart.length, [cart.length]);
+
+  // const SUBTOTAL = useMemo(
+  //   () => cart.reduce((curr, acc) => curr + acc.price, 0),
+  //   [cart]
+  // );
+  // const TAX = useMemo(() => SUBTOTAL * 0.21, [SUBTOTAL]);
+  // const TOTAL = useMemo(() => SUBTOTAL + TAX, [TAX, SUBTOTAL]);
+
   return (
     <>
-      <h2 className="text-xl">Order summary (3 items)</h2>
+      <h2 className="text-xl">
+        Order summary ({cartLength} {cartLength === 1 ? "item" : "items"})
+      </h2>
       <Divider />
       <div className="flex justify-between my-5">
         <h3 className="font-bold text-xl">Address: </h3>
@@ -23,22 +39,24 @@ const OrderSummary = () => {
 
       <div className="mt-5 flex justify-between">
         <h3 className="font-bold text-lg">Products: </h3>
-        <p className="text-xl">3 items</p>
+        <p className="text-xl">
+          {cartLength} {cartLength === 1 ? "item" : "items"}
+        </p>
       </div>
 
       <div className="flex justify-between">
         <h3 className="font-bold text-lg">Subtotal: </h3>
-        <p className="text-xl">$205.32</p>
+        <p className="text-xl">${subtotal}</p>
       </div>
 
       <div className="flex justify-between">
         <h3 className="font-bold text-lg">TAX: </h3>
-        <p className="text-xl">$32.29</p>
+        <p className="text-xl">${tax}</p>
       </div>
 
       <div className="mt-5 flex justify-between font-extrabold">
         <h3 className="text-xl">TOTAL:</h3>
-        <h3 className="text-3xl">$234.45</h3>
+        <h3 className="text-3xl">${total}</h3>
       </div>
       <Button
         className="bg-blue-500 text-white hover:text-black rounded-full mt-5"

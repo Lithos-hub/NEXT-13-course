@@ -1,5 +1,5 @@
 import { FC, useMemo, useState } from "react";
-import { Card, CardActionArea, CardMedia } from "@mui/material";
+import { Card, CardActionArea, CardMedia, Chip } from "@mui/material";
 import { IProduct } from "../../interfaces/Product";
 
 interface Props {
@@ -20,6 +20,14 @@ const ProductCard: FC<Props> = ({ product }) => {
     >
       <Card>
         <CardActionArea>
+          {product.inStock === 0 && (
+            <Chip
+              color="error"
+              className="absolute top-2 left-2"
+              label="Out of stock"
+            />
+          )}
+
           <CardMedia component="img" image={productImage} alt={product.title} />
         </CardActionArea>
       </Card>

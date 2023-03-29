@@ -8,20 +8,21 @@ import {
   Toolbar,
 } from "@mui/material";
 import Link from "next/link";
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import SearchOutlined from "@mui/icons-material/SearchOutlined";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { Close, Menu, ShoppingCartOutlined } from "@mui/icons-material";
 import { onToggleSidebar } from "@/store/slices";
 import { useRouter } from "next/router";
-import { useTheme } from "@emotion/react";
+import { RootState } from "../../store/index";
 
 const Navbar = () => {
   const dispatch = useDispatch();
   const [searchTerm, setSearchTerm] = useState("");
   const router = useRouter();
   const [searchInputVisible, setSearchInputVisibile] = useState(false);
+  const { cart } = useSelector((state: RootState) => state.CartStore);
 
   const openSidemenu = () => dispatch(onToggleSidebar());
 
@@ -112,7 +113,10 @@ const Navbar = () => {
           </IconButton>
           <Link href="/cart" passHref>
             <IconButton>
-              <Badge badgeContent={3} color="secondary">
+              <Badge
+                badgeContent={cart.length < 10 ? cart.length : "+9"}
+                color="secondary"
+              >
                 <ShoppingCartOutlined />
               </Badge>
             </IconButton>

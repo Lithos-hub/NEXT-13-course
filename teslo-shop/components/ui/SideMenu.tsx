@@ -79,48 +79,49 @@ const SideMenu = () => {
             />
           </ListItem>
 
-          <Link href="/profile">
-            <ListItemButton>
-              <ListItemIcon>
-                <AccountCircleOutlined />
-              </ListItemIcon>
-              <ListItemText primary={"Profile"} />
-            </ListItemButton>
-          </Link>
+          <ListItemButton onClick={() => navigateTo("/profile")}>
+            <ListItemIcon>
+              <AccountCircleOutlined />
+            </ListItemIcon>
+            <ListItemText primary={"Profile"} />
+          </ListItemButton>
 
           <ListItemButton>
             <ListItemIcon>
               <ConfirmationNumberOutlined />
             </ListItemIcon>
-            <ListItemText primary={"Mis Ordenes"} />
+            <ListItemText primary={"My orders"} />
           </ListItemButton>
 
-          <Link href="/category/men">
-            <ListItemButton sx={{ display: { md: "", lg: "none" } }}>
-              <ListItemIcon>
-                <MaleOutlined />
-              </ListItemIcon>
-              <ListItemText primary={"Men"} />
-            </ListItemButton>
-          </Link>
+          <ListItemButton
+            onClick={() => navigateTo("/category/men")}
+            sx={{ display: { md: "", lg: "none" } }}
+          >
+            <ListItemIcon>
+              <MaleOutlined />
+            </ListItemIcon>
+            <ListItemText primary={"Men"} />
+          </ListItemButton>
 
-          <Link href="/category/women">
-            <ListItemButton sx={{ display: { md: "", lg: "none" } }}>
-              <ListItemIcon>
-                <FemaleOutlined />
-              </ListItemIcon>
-              <ListItemText primary={"Women"} />
-            </ListItemButton>
-          </Link>
+          <ListItemButton
+            onClick={() => navigateTo("/category/women")}
+            sx={{ display: { md: "", lg: "none" } }}
+          >
+            <ListItemIcon>
+              <FemaleOutlined />
+            </ListItemIcon>
+            <ListItemText primary={"Women"} />
+          </ListItemButton>
 
-          <Link href="/category/kids">
-            <ListItemButton sx={{ display: { md: "", lg: "none" } }}>
-              <ListItemIcon>
-                <EscalatorWarningOutlined />
-              </ListItemIcon>
-              <ListItemText primary={"Kids"} />
-            </ListItemButton>
-          </Link>
+          <ListItemButton
+            onClick={() => navigateTo("/category/kids")}
+            sx={{ display: { md: "", lg: "none" } }}
+          >
+            <ListItemIcon>
+              <EscalatorWarningOutlined />
+            </ListItemIcon>
+            <ListItemText primary={"Kids"} />
+          </ListItemButton>
 
           <ListItemButton>
             <ListItemIcon>

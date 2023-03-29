@@ -10,7 +10,7 @@ interface Props {
 
 const SizeSelector: FC<Props> = ({ selectedSize, sizes, onSelection }) => {
   return (
-    <ul className="flex gap-1 justify-center">
+    <ul className="flex flex-wrap gap-1 justify-center">
       {sizes.map((size, i) => (
         <li key={i}>
           <Button

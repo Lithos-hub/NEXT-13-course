@@ -1,20 +1,30 @@
-import { initialData } from "@/database/products";
-import { Button, CardMedia, IconButton } from "@mui/material";
-import Image from "next/image";
-import React from "react";
+import { Button, CardMedia } from "@mui/material";
+import React, { FC } from "react";
 import { ItemCounter } from "../ui";
-import { Delete } from "@mui/icons-material";
+import { IProduct } from "../../interfaces/Product";
+import { ICartProduct } from "@/interfaces";
+import { useDispatch } from "react-redux";
+import {
+  removeProductFromCart,
+  updateCartProduct,
+  updateCheckoutPrice,
+} from "@/store/slices";
 
-type Props = {};
+type Props = {
+  products: ICartProduct[];
+};
 
-const products = [
-  initialData.products[0],
-  initialData.products[1],
-  initialData.products[2],
-  initialData.products[3],
-];
+const CartList: FC<Props> = ({ products }) => {
+  const dispatch = useDispatch();
+  const removeProduct = (product: ICartProduct) => {
+    dispatch(removeProductFromCart(product));
+    dispatch(updateCheckoutPrice());
+  };
 
-const CartList = (props: Props) => {
+  const onSelectedQuantity = (quantity: number, productId: string) => {
+    dispatch(updateCartProduct({ quantity, productId }));
+  };
+
   return (
     <ul className="flex flex-col gap-5">
       {products.map((product, i) => (
@@ -22,7 +32,7 @@ const CartList = (props: Props) => {
           <div>
             <CardMedia
               alt={product.title}
-              src={`/products/${product.images[0]}`}
+              src={`/products/${product.images}`}
               component="img"
               className="w-[200px]"
             />
@@ -30,13 +40,26 @@ const CartList = (props: Props) => {
           <div className="py-5">
             <h3>{product.title}</h3>
             <h5>
-              Size: <strong>M</strong>
+              Size: <strong>{product.sizes}</strong>
             </h5>
-            Quantity: <ItemCounter />
+            Quantity:{" "}
+            <ItemCounter
+              productId={product._id}
+              max={product.inStock as number}
+              quantity={product.quantity}
+              onSelectedQuantity={(quantity, productId) => {
+                onSelectedQuantity(quantity, productId as string);
+              }}
+            />
           </div>
           <div className="p-5 flex flex-col gap-2 ml-auto text-center">
             <strong className="text-xl">${product.price}</strong>
-            <Button className="shadow-xl">Remove</Button>
+            <Button
+              className="shadow-xl"
+              onClick={() => removeProduct(product)}
+            >
+              Remove
+            </Button>
           </div>
         </li>
       ))}
