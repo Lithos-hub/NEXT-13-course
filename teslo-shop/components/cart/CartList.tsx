@@ -1,7 +1,6 @@
 import { Button, CardMedia } from "@mui/material";
 import React, { FC } from "react";
 import { ItemCounter } from "../ui";
-import { IProduct } from "../../interfaces/Product";
 import { ICartProduct } from "@/interfaces";
 import { useDispatch } from "react-redux";
 import {

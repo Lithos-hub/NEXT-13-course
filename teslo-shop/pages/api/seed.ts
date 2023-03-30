@@ -1,7 +1,8 @@
 import { db } from "@/database";
-import { initialData } from "@/database/products";
+import { initialData } from "@/database/seed-data";
 
 import { Product } from "@/models";
+import User from "@/models/User";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 type Data = {
@@ -16,12 +17,13 @@ export default async function handler(
     return res.status(401).json({ message: "Access denied" });
   }
 
-  console.log("Response: ", res);
-
   await db.connect();
 
   await Product.deleteMany();
   await Product.insertMany(initialData.products);
+
+  await User.deleteMany();
+  await User.insertMany(initialData.users);
 
   await db.disconnect();
 
