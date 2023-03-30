@@ -1,8 +1,8 @@
-## Teslo Shop
+# Teslo Shop
 
 Fullstack application made with Next 13, Docker and MongoDB.
 
-# Setup
+## Setup
 
 1. Install and run Docker
 2. Install and run Mongo Compass
