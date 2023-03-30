@@ -22,7 +22,7 @@ const ProductPage: NextPage<Props> = ({ product }) => {
   const [tempCartProduct, setTempCartProduct] = useState<ICartProduct>({
     ...product,
     images: product.images[0],
-    sizes: selectedSize,
+    selectedSize,
     quantity,
   });
 
@@ -32,10 +32,11 @@ const ProductPage: NextPage<Props> = ({ product }) => {
   };
 
   const onSelectedSize = (size: ISizes) => {
+    console.log("Setting size: ", size);
     setSelectedSize(size);
     setTempCartProduct({
       ...tempCartProduct,
-      sizes: selectedSize,
+      selectedSize: size,
     });
   };
 

@@ -23,6 +23,7 @@ const CartList: FC<Props> = ({ products }) => {
 
   const onSelectedQuantity = (quantity: number, productId: string) => {
     dispatch(updateCartProduct({ quantity, productId }));
+    dispatch(updateCheckoutPrice());
   };
 
   return (
@@ -40,7 +41,7 @@ const CartList: FC<Props> = ({ products }) => {
           <div className="py-5">
             <h3>{product.title}</h3>
             <h5>
-              Size: <strong>{product.sizes}</strong>
+              Size: <strong>{product.selectedSize}</strong>
             </h5>
             Quantity:{" "}
             <ItemCounter

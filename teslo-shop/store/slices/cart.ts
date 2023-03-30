@@ -30,14 +30,12 @@ export const CartSlice = createSlice({
         (curr, acc) => curr + acc.price * acc.quantity,
         0
       );
-      state.tax = state.subtotal * 0.21;
+      state.tax = Number((state.subtotal * 0.21).toFixed(2));
       state.total = state.subtotal + state.tax;
     },
     updateCartProduct: (state, { payload }) => {
-      console.log(payload);
       state.cart = state.cart.map((product) => {
         if (product._id === payload.productId) {
-          console.log("updating");
           return {
             ...product,
             quantity: payload.quantity,
